@@ -13,9 +13,11 @@ def get_user(user_id):
     return jsonify({
         'id': user.id,
         'username': user.username,
+        'phone': user.phone,
         'profile_picture': user.profile_picture,
         'status': user.status,
-        'last_seen': user.last_seen
+        'last_seen': user.last_seen.isoformat() if user.last_seen else None,
+        'is_admin': user.is_admin
     })
 
 @user_bp.route('/update', methods=['POST'])
@@ -54,8 +56,10 @@ def search_users():
     return jsonify([{
         'id': user.id,
         'username': user.username,
+        'phone': user.phone,
         'profile_picture': user.profile_picture,
-        'status': user.status
+        'status': user.status,
+        'is_admin': user.is_admin
     } for user in users])
 @user_bp.route('/calls', methods=['GET'])
 def get_calls():
