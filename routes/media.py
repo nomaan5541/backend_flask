@@ -27,8 +27,11 @@ def upload_file():
         
         file.save(os.path.join(upload_folder, filename))
         
-        # Return the URL (assuming served via static)
-        file_url = f"/static/uploads/{filename}"
+        # Return the URL
+        # Use request.host_url (e.g., https://.../) + static path
+        # Removing trailing slash from host_url just in case
+        base_url = request.host_url.rstrip('/')
+        file_url = f"{base_url}/static/uploads/{filename}"
         return jsonify({'message': 'File uploaded successfully', 'url': file_url}), 201
         
     return jsonify({'error': 'File type not allowed'}), 400
