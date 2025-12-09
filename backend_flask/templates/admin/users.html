@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex justify-between items-center mb-6">
+    <h2 class="text-3xl font-bold">User Management</h2>
+    <input type="text" placeholder="Search users..." class="bg-gray-800 border border-gray-700 p-2 rounded text-white">
+</div>
+
+<div class="glass-panel rounded-xl overflow-hidden">
+    <table class="w-full text-left">
+        <thead class="bg-gray-800 text-gray-400 uppercase text-xs">
+            <tr>
+                <th class="p-4">ID</th>
+                <th class="p-4">Username</th>
+                <th class="p-4">Phone</th>
+                <th class="p-4">Status</th>
+                <th class="p-4 text-right">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-800">
+            {% for user in users %}
+            <tr class="hover:bg-gray-800 transition">
+                <td class="p-4 text-gray-500">#{{ user.id }}</td>
+                <td class="p-4 font-bold">{{ user.username }}</td>
+                <td class="p-4 text-gray-400">{{ user.phone }}</td>
+                <td class="p-4">
+                    <span
+                        class="px-2 py-1 rounded text-xs {{ 'bg-green-900 text-green-200' if user.status != 'Blocked' else 'bg-red-900 text-red-200' }}">
+                        {{ user.status }}
+                    </span>
+                </td>
+                <td class="p-4 text-right space-x-2">
+                    {% if user.status != 'Blocked' %}
+                    <a href="{{ url_for('admin.block_user', id=user.id) }}"
+                        class="text-yellow-500 hover:text-yellow-400 text-sm">Block</a>
+                    {% else %}
+                    <span class="text-gray-600 text-sm">Blocked</span>
+                    {% endif %}
+                    <a href="{{ url_for('admin.delete_user', id=user.id) }}"
+                        class="text-red-500 hover:text-red-400 text-sm"
+                        onclick="return confirm('Are you sure?')">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
