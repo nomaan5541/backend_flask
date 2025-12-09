@@ -50,7 +50,9 @@ def get_users():
         'id': user.id,
         'username': user.username,
         'phone': user.phone,
+        'profile_picture': user.profile_picture,
         'status': user.status,
+        'last_seen': user.last_seen.isoformat() if user.last_seen else None,
         'is_admin': user.is_admin
     } for user in users]
     return jsonify(users_list), 200
