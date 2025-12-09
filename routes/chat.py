@@ -22,7 +22,7 @@ def get_chat_history(user_id, other_user_id):
             'sender_id': msg.sender_id,
             'receiver_id': msg.receiver_id,
             'message': msg.message,
-            'timestamp': msg.timestamp,
+            'timestamp': msg.timestamp.isoformat(),
             'message_type': msg.message_type,
             'media_url': msg.media_url,
             'status': msg.status
@@ -106,7 +106,18 @@ def send_message():
     db.session.add(new_message)
     db.session.commit()
     
-    # In a real app, trigger SocketIO event here to notify receiver if connected via REST-to-Socket bridge
+    # Emit SocketIO event
+    from extensions import socketio
+    socketio.emit('new_message', {
+        'id': new_message.id,
+        'sender_id': new_message.sender_id,
+        'receiver_id': new_message.receiver_id,
+        'message': new_message.message,
+        'timestamp': new_message.timestamp.isoformat(),
+        'message_type': new_message.message_type,
+        'media_url': new_message.media_url,
+        'status': new_message.status
+    }, room=None) # Broadcast to all for MVP, or implement rooms for scale
     
     return jsonify({'message': 'Message sent successfully', 'id': new_message.id}), 201
 
