@@ -17,3 +17,9 @@ def verify_token(token):
         return None
     except jwt.InvalidTokenError:
         return None
+
+def decode_token(token):
+    try:
+        return jwt.decode(token, os.environ.get('SECRET_KEY') or 'you-will-never-guess', algorithms=['HS256'])
+    except Exception:
+        raise Exception("Invalid Token")
