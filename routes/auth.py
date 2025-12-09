@@ -36,7 +36,9 @@ def register():
     return jsonify({'message': 'User created successfully', 'token': token, 'user': {
         'id': new_user.id,
         'username': new_user.username,
-        'phone': new_user.phone
+        'phone': new_user.phone,
+        'profile_picture': new_user.profile_picture,
+        'is_admin': new_user.is_admin
     }}), 201
 
 @auth_bp.route('/login', methods=['POST'])
@@ -54,6 +56,7 @@ def login():
     return jsonify({'message': 'Login successful', 'token': token, 'user': {
         'id': user.id,
         'username': user.username,
+        'phone': user.phone,
         'profile_picture': user.profile_picture,
         'is_admin': user.is_admin
     }}), 200
