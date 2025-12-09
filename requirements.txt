@@ -7,4 +7,5 @@ gunicorn==21.2.0
 Werkzeug==3.0.1
 python-dotenv==1.0.0
 simple-websocket==1.0.0
-setuptools  # Required for some legacy dependencies in Python 3.12+
+setuptools
+PyJWT==2.8.0
